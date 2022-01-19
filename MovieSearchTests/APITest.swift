@@ -15,5 +15,11 @@ class APITest: XCTestCase {
         let url = URL(string: "http://www.omdbapi.com")!.url(with: [queryItem])
         XCTAssertEqual(url.absoluteString, "http://www.omdbapi.com?testName=testValue")
     }
+    
+    func test_full_url_builder() {
+        let request: Request<Movie> = Request(method: .get, path: "/testing")
+        let url = URL("http://www.omdbapi.com", "testKey", request)
+        XCTAssertEqual(url.absoluteString, "http://www.omdbapi.com/testing?apikey=testKey")
+    }
 
 }
