@@ -14,11 +14,13 @@ enum Method: String {
 struct Request<Value> {
     
     var method: Method
-    var path: String
+    var search: String?
+    var path: String?
     
-    init(method: Method = .get, path: String) {
+    init(method: Method = .get, path: String?, search: String?) {
         self.method = method
         self.path = path
+        self.search = search
     }
     
 }

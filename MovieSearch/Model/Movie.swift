@@ -9,14 +9,15 @@ import Foundation
 
 struct Movie: Decodable, Identifiable {
     var id: String {
-        imdbRating
+        imdbID
     }
     let title: String
     let year: String
     let imdbID: String
-    let plot: String
-    let imdbRating: String
-    let genre: String
+    let plot: String?
+    let imdbRating: String?
+    let genre: String?
+    let poster: String
 
     enum CodingKeys: String, CodingKey {
         case imdbID
@@ -25,5 +26,20 @@ struct Movie: Decodable, Identifiable {
         case year = "Year"
         case plot = "Plot"
         case genre = "Genre"
+        case poster = "Poster"
+    }
+}
+
+struct Search: Decodable {
+    var movies: [Movie]
+    
+    enum CodingKeys: String, CodingKey {
+        case movies = "Search"
+    }
+}
+
+extension Search {
+    static func search(name: String) -> Request<Search> {
+        Request(method: .get, path: nil, search: name)
     }
 }

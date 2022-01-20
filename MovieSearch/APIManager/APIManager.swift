@@ -17,7 +17,7 @@ final class APIManager {
     static let shared = APIManager()
     
     let apiKey = "a303f5f9"
-    let host = "http://www.omdbapi.com/"
+    let host = "https://www.omdbapi.com/"
     
     private let urlSession: URLSession
     
@@ -31,7 +31,8 @@ final class APIManager {
                 let response: Value
                 do {
                     response = try JSONDecoder().decode(Value.self, from: data)
-                } catch {
+                } catch(let err) {
+                    print(err)
                     completion(.failure(.parsingError))
                     return
                 }
@@ -60,11 +61,11 @@ extension URL {
     }
     
     init<Value>(_ host: String, _ apiKey: String, _ request: Request<Value>) {
-        let queryItems = [ ("apikey", apiKey) ]
-            .map { name, value in URLQueryItem(name: name, value: "\(value)") }
+        let queryItems = [ ("apikey", apiKey), ("s", request.search) ]
+        .map { name, value in URLQueryItem(name: name, value: "\(value ?? "")") }
         
         let url = URL(string: host)!
-            .appendingPathComponent(request.path)
+            .appendingPathComponent(request.path ?? "")
             .url(with: queryItems)
         
         self.init(string: url.absoluteString)!
