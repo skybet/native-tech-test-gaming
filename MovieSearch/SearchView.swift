@@ -30,28 +30,38 @@ struct SearchView: View {
                             Text("Search")
                         }
                     }
+                    .disabled(viewModel.searchParamater.count < 3)
                     .buttonStyle(.bordered)
                 }
-                    LazyVGrid(columns: columns, spacing: 10) {
-                        ForEach(viewModel.history, id: \.self) { value in
-                            Button {
-                                viewModel.search()
-                            } label: {
-                                Text(value)
-                            }
-                            .buttonStyle(.borderedProminent)
+                LazyVGrid(columns: columns, spacing: 10) {
+                    ForEach(viewModel.history, id: \.self) { value in
+                        Button {
+                            viewModel.searchParamater = value
+                            viewModel.search()
+                        } label: {
+                            Text(value)
                         }
+                        .buttonStyle(.borderedProminent)
                     }
+                }
                 NavigationLink(isActive: $viewModel.showResult) {
-                    MovieList(movies: viewModel.movies)
+                    MovieList(movies: viewModel.movies, title: viewModel.searchParamater)
                 } label: {
                     Text("")
                 }
-
+                
             }
+            .padding(.horizontal)
             .onAppear {
                 viewModel.getHistory()
-        }
+            }
+            .onDisappear {
+                viewModel.saveHistory()
+            }
+            .alert(Text("Error"), isPresented: $viewModel.error) {
+                
+            }
+            .navigationTitle("Search Movies")
         }
     }
 }

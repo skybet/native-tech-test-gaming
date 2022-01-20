@@ -9,14 +9,18 @@ import SwiftUI
 
 struct MovieList: View {
   @State var movies: [Movie]
+    var title: String
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
             ForEach($movies) { movie in
                     MovieView(movie: movie)
+                Divider()
+                    .padding(.horizontal)
                 }
             }
         }
+        .navigationTitle(title)
     }
 }
 
@@ -38,7 +42,9 @@ struct MovieView: View {
                 }
                 .font(.body)
             }
+            Spacer()
         }
+        .padding()
         .onAppear {
             getImage()
         }

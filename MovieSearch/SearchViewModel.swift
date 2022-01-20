@@ -14,10 +14,11 @@ class SearchViewModel: ObservableObject {
     @AppStorage("history") var historyStore: String = ""
     @Published var movies: [Movie] = []
     @Published var showResult = false
+    @Published var error = false
     
     func saveHistory() {
         if !history.isEmpty {
-            historyStore = history[0...10].joined(separator: ",")
+            historyStore = history[0...(min(10, history.count - 1))].joined(separator: ",")
         }
     }
     
@@ -33,7 +34,7 @@ class SearchViewModel: ObservableObject {
     private func updateHistory() {
         if history.isEmpty {
             history.append(searchParamater)
-        }else {
+        }else if !history.contains(searchParamater) {
             history.insert(searchParamater, at: 0)
             if history.count > 9 {
                 history.popLast()
@@ -45,10 +46,13 @@ class SearchViewModel: ObservableObject {
         APIManager.shared.execute(Search.search(name: searchParamater)) { result in
             switch result {
             case .success(let result):
-                self.movies = result.movies
-                self.showResult = true
+                DispatchQueue.main.async {
+                    self.movies = result.movies
+                    self.showResult = true
+                }
             case .failure(let error):
                 print(error.localizedDescription)
+                self.error = true
             }
         }
     }
