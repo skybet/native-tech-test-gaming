@@ -12,6 +12,8 @@ class SearchViewModel: ObservableObject {
     @Published var searchParamater: String = ""
     @Published var history: [String] = []
     @AppStorage("history") var historyStore: String = ""
+    @Published var movies: [Movie] = []
+    @Published var showResult = false
     
     func saveHistory() {
         if !history.isEmpty {
@@ -43,7 +45,8 @@ class SearchViewModel: ObservableObject {
         APIManager.shared.execute(Search.search(name: searchParamater)) { result in
             switch result {
             case .success(let result):
-                print(result.movies.first?.title)
+                self.movies = result.movies
+                self.showResult = true
             case .failure(let error):
                 print(error.localizedDescription)
             }

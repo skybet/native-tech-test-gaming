@@ -17,6 +17,7 @@ struct Movie: Decodable, Identifiable {
     let plot: String?
     let imdbRating: String?
     let genre: String?
+    let type: String?
     let poster: String
 
     enum CodingKeys: String, CodingKey {
@@ -27,6 +28,7 @@ struct Movie: Decodable, Identifiable {
         case plot = "Plot"
         case genre = "Genre"
         case poster = "Poster"
+        case type = "Type"
     }
 }
 

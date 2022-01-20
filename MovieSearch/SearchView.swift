@@ -15,36 +15,43 @@ struct SearchView: View {
         GridItem(.flexible())
     ]
     var body: some View {
-        VStack {
-            HStack(alignment: .center) {
-                TextField("Enter Movie Name", text: $viewModel.searchParamater)
-                    .textFieldStyle(.roundedBorder)
-                Button {
-                    if !viewModel.searchParamater.isEmpty {
-                        viewModel.search()
-                    }
-                } label: {
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                        Text("Search")
-                    }
-                }
-                .buttonStyle(.bordered)
-            }
-                LazyVGrid(columns: columns, spacing: 10) {
-                    ForEach(viewModel.history, id: \.self) { value in
-                        Button {
+        NavigationView {
+            VStack {
+                HStack(alignment: .center) {
+                    TextField("Enter Movie Name", text: $viewModel.searchParamater)
+                        .textFieldStyle(.roundedBorder)
+                    Button {
+                        if !viewModel.searchParamater.isEmpty {
                             viewModel.search()
-                        } label: {
-                            Text(value)
                         }
-                        .buttonStyle(.borderedProminent)
-                        
+                    } label: {
+                        HStack {
+                            Image(systemName: "magnifyingglass")
+                            Text("Search")
+                        }
                     }
+                    .buttonStyle(.bordered)
                 }
+                    LazyVGrid(columns: columns, spacing: 10) {
+                        ForEach(viewModel.history, id: \.self) { value in
+                            Button {
+                                viewModel.search()
+                            } label: {
+                                Text(value)
+                            }
+                            .buttonStyle(.borderedProminent)
+                        }
+                    }
+                NavigationLink(isActive: $viewModel.showResult) {
+                    MovieList(movies: viewModel.movies)
+                } label: {
+                    Text("")
+                }
+
+            }
+            .onAppear {
+                viewModel.getHistory()
         }
-        .onAppear {
-            viewModel.getHistory()
         }
     }
 }
