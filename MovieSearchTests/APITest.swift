@@ -17,9 +17,17 @@ class APITest: XCTestCase {
     }
     
     func test_full_url_builder() {
-        let request: Request<Movie> = Request(method: .get, path: "/testing")
-        let url = URL("http://www.omdbapi.com", "testKey", request)
-        XCTAssertEqual(url.absoluteString, "http://www.omdbapi.com/testing?apikey=testKey")
+        let searchRequest: Request<Search> = Request(method: .get, parameter: .search, parameterValue: "aven", path: nil)
+        let searchUrl = URL("http://www.omdbapi.com", "testKey", searchRequest)
+        XCTAssertEqual(searchUrl.absoluteString, "http://www.omdbapi.com/?apikey=testKey&s=aven")
+        
+        let movieRequest: Request<Movie> = Request(method: .get, parameter: .id, parameterValue: "12345", path: nil)
+        let movieUrl = URL("http://www.omdbapi.com", "testKey", movieRequest)
+        XCTAssertEqual(movieUrl.absoluteString, "http://www.omdbapi.com/?apikey=testKey&i=12345")
+        
+        let titleRequest: Request<Movie> = Request(method: .get, parameter: .title, parameterValue: "avengers", path: nil)
+        let titleUrl = URL("http://www.omdbapi.com", "testKey", titleRequest)
+        XCTAssertEqual(titleUrl.absoluteString, "http://www.omdbapi.com/?apikey=testKey&t=avengers")
     }
 
 }
