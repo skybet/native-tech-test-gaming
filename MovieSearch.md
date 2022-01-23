@@ -4,10 +4,12 @@ Lets you search for movies
 
 ## Overview
 
-<!--@START_MENU_TOKEN@-->Text<!--@END_MENU_TOKEN@-->
+Let you search for movies by name.
 
 ## Topics
 
-### <!--@START_MENU_TOKEN@-->Group<!--@END_MENU_TOKEN@-->
+### Technology Choise
 
-- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
+1. Used Swift UI instead of UI Kit just to showcase I can code in Swift UI as well.
+2. Used User defaults to presist search history, as the information is not huge.
+
