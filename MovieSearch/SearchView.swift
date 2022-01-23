@@ -58,7 +58,7 @@ struct SearchView: View {
             .onDisappear {
                 viewModel.saveHistory()
             }
-            .alert(Text("Error"), isPresented: $viewModel.error) {
+            .alert(Text("Movie details not found"), isPresented: $viewModel.error) {
                 
             }
             .navigationTitle("Search Movies")

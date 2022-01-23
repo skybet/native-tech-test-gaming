@@ -14,7 +14,12 @@ struct MovieList: View {
         ScrollView {
             VStack(alignment: .leading) {
             ForEach($movies) { movie in
+                NavigationLink {
+                    MovieDetails(viewModel: MovieDetailsViewModel(id: movie.id))
+                } label: {
                     MovieView(movie: movie)
+                }
+
                 Divider()
                     .padding(.horizontal)
                 }
@@ -46,16 +51,10 @@ struct MovieView: View {
         }
         .padding()
         .onAppear {
-            getImage()
-        }
-    }
-    func getImage() {
-        let imageURL = URL(string: movie.poster)
-        DispatchQueue.global().async {
-            let data = try? Data(contentsOf: imageURL!)
-            DispatchQueue.main.async {
-                guard let data = data else { return }
-                self.image = UIImage(data: data) ?? UIImage(systemName: "photo")!
+            Movie.getImage(for: movie) { image in
+                DispatchQueue.main.async {
+                    self.image = image
+                }
             }
         }
     }

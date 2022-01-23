@@ -61,7 +61,8 @@ extension URL {
     }
     
     init<Value>(_ host: String, _ apiKey: String, _ request: Request<Value>) {
-        let queryItems = [ ("apikey", apiKey), ("s", request.search) ]
+        
+        let queryItems = [ ("apikey", apiKey), (request.parameter?.rawValue ?? "s", request.parameterValue) ]
         .map { name, value in URLQueryItem(name: name, value: "\(value ?? "")") }
         
         let url = URL(string: host)!

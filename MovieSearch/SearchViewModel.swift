@@ -47,12 +47,14 @@ class SearchViewModel: ObservableObject {
             switch result {
             case .success(let result):
                 DispatchQueue.main.async {
-                    self.movies = result.movies
+                    self.movies = result.movies.sorted { $0.year > $1.year }
                     self.showResult = true
                 }
             case .failure(let error):
                 print(error.localizedDescription)
-                self.error = true
+                DispatchQueue.main.async {
+                    self.error = true
+                }
             }
         }
     }
